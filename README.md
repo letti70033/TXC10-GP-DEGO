@@ -52,7 +52,6 @@ This notebook applies a structured bias analysis to the cleaned dataset (`clean_
 * Loads `clean_credit_applications.csv` from the Data Engineering export directly, without MongoDB dependency.
 * Derives applicant age from `date_of_birth` and bins into four groups (`<30`, `30–44`, `45–59`, `60+`).
 * Parses `spending_behavior` from stringified list format for category-level analysis.
-* Excludes 3 records with `gender = UNKNOWN` from protected-attribute comparisons.
 
 #### 2 - Overview of Protected Attributes
 * **Gender Distribution:** Balanced split (Male: 246, Female: 248), ensuring sufficient statistical power for group-level comparisons.
