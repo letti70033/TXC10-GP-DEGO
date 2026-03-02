@@ -18,8 +18,8 @@ The workflow is divided into four critical stages:
 #### 2. Data Cleaning
 A comprehensive quality assurance process addressing six core data quality dimensions:
 * **Inconsistent Data Types:** Dynamically audited the nested structures and cast mixed-type fields (e.g., converted 8 string representations of `annual_income` into integers).
-* **Missing Data & KYC Compliance:** * **Dropped:** 6 structurally invalid records (5 missing SSN, 1 missing Date of Birth) to ensure strict KYC (Know Your Customer) and age verification compliance.
-    * **Imputed:** Filled missing demographic and contact data (e.g., emails) with "UNKNOWN" placeholders to preserve valid financial data for downstream analysis.
+* **Missing Data & KYC Compliance:** * **Dropped:** 6 structurally invalid records (missing SSN, Date of Birth, or Gender) to ensure strict KYC (Know Your Customer) compliance and preserve data integrity for downstream Bias Analysis.
+    * **Imputed:** Filled missing contact and location data (e.g., emails, zip codes) with "UNKNOWN" placeholders to preserve valid financial data for downstream analysis.
 * **Schema Drift:** Identified and resolved drifting schema keys by mapping legacy `annual_salary` fields to the official `annual_income` key without data loss.
 * **Categorical Formatting:** Standardized inconsistent categorical codes using direct mapping (e.g., mapped 111 instances of "M"/"F" to "Male"/"Female" for accurate demographic grouping).
 * **Impossible Values:** Applied strict domain-specific rules to correct negative numbers:
@@ -39,10 +39,8 @@ Extracts the validated database into two distinct formats for cross-functional t
 
 ### Key Results
 * **Raw Records Evaluated:** 502
-<<<<<<< HEAD
 * **Final Clean Records:** 494 perfectly validated, structurally sound records ready for analysis.
-=======
-* **Final Clean Records:** 494 perfectly validated, structurally sound records ready for analysis.
+
 
 ## Data Scientist Pipeline: Bias Detection & Proxy Discrimination Analysis
 
@@ -97,4 +95,3 @@ This notebook applies a structured bias analysis to the cleaned dataset (`clean_
 * **Synthetic dataset:** Results reflect intentionally injected patterns; effect sizes may be inflated relative to a production system.
 * **No ground truth:** Without an independent creditworthiness label, error-rate-based metrics (equalized odds, equal opportunity) cannot be computed — analysis is limited to outcome-based metrics.
 * **Single time period:** Longitudinal analysis would be required to confirm persistence of bias over time.
->>>>>>> 45d650d2dc6dd4c0a2e8c57c370c9e918da875e0
