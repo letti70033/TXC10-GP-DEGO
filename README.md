@@ -1,50 +1,41 @@
 # TXC10-GP-DEGO
 TXC10 - DEGO 2606 Group Project – Credit Application Governance Analysis
 
-1. Data Engineer: 
+1. Data Engineer: 70485 Lennart Stenzel
 2. Data Scientist: 70033 Leticia Brendle 
 3. Governance Officer: 
 
 This workbook contains 3 notebooks, each corresponding to one Role:
 
-## Data Engineering Pipeline: Credit Applications
+## Data Quality Findings
 
-This repository contains a robust Data Engineering pipeline designed to process, clean, and validate raw credit application data using **Python** and **MongoDB**. The pipeline transforms messy, unstructured NoSQL data into a pristine, validated dataset.
+As part of the NovaCred Data Governance Task Force, we conducted a comprehensive data quality audit on the `raw_credit_applications.json` dataset. To ensure our algorithmic bias testing is built on a reliable foundation, we evaluated the dataset across the six core dimensions of data quality. 
 
-### Pipeline Overview
+Out of the initial 500+ records, our automated Data Engineering pipeline successfully cleaned and retained 494 valid records. These were subsequently locked under strict MongoDB schema validation to prevent future degradation into a "data swamp".
 
-The workflow is divided into four critical stages:
+### 1. Uniqueness
+* **Issue Found:** We identified 2 duplicate records (`app_042`, `app_001`) sharing identical `_id` fields. 
+* **Remediation:** Overwrote the duplicates during database insertion to ensure every application represents a unique individual, preventing skewed analytics.
 
-#### 1. Data Loading & Deduplication
-* Connects to a local MongoDB instance (`novacred_db`).
-* Parses raw JSON data and enforces uniqueness by dropping duplicate application `_id`s upon insertion (removed 2 resubmitted duplicates).
-* Successfully loaded 500 unique applications into the database for processing.
+### 2. Completeness
+* **Issue Found:** A database-wide audit revealed missing critical identifiers (5 missing SSNs, 1 missing DOB), missing demographic data (gender), and missing contact information (2 missing emails). We also found 5 records where `annual_income` was seemingly missing, but was actually stored under the key `annual_salary` (schema drift).
+* **Remediation:** Dropped 6 structurally invalid "ghost" records that lacked legally required KYC fields (SSN/DOB) or essential demographic data (gender) needed for bias testing. However, for the 2 missing emails, we imputed them with a placeholder ("UNKNOWN_EMAIL") instead of dropping the rows. We did this because email is non-critical for the credit risk algorithm; dropping those rows would mean throwing away perfectly valid financial data. Finally, we renamed the 5 drifted `annual_salary` keys to `annual_income`.
 
-#### 2. Data Cleaning
-A comprehensive quality assurance process addressing six core data quality dimensions:
-* **Inconsistent Data Types:** Dynamically audited the nested structures and cast mixed-type fields (e.g., converted 8 string representations of `annual_income` into integers).
-* **Missing Data & KYC Compliance:** * **Dropped:** 6 structurally invalid records (missing SSN, Date of Birth, or Gender) to ensure strict KYC (Know Your Customer) compliance and preserve data integrity for downstream Bias Analysis.
-    * **Imputed:** Filled missing contact and location data (e.g., emails, zip codes) with "UNKNOWN" placeholders to preserve valid financial data for downstream analysis.
-* **Schema Drift:** Identified and resolved drifting schema keys by mapping legacy `annual_salary` fields to the official `annual_income` key without data loss.
-* **Categorical Formatting:** Standardized inconsistent categorical codes using direct mapping (e.g., mapped 111 instances of "M"/"F" to "Male"/"Female" for accurate demographic grouping).
-* **Impossible Values:** Applied strict domain-specific rules to correct negative numbers:
-    * *Time Metrics:* Converted negative `credit_history_months` (2 records) to their absolute values.
-    * *Financial Metrics:* Floored negative `savings_balance` amounts (1 record) to `$0` to prevent artificial wealth inflation.
-* **Inconsistent Dates:** Utilized `pandas` datetime parsing to intelligently interpret chaotic date strings (e.g., `DD/MM/YYYY`) and standardized 157 records to the strict ISO 8601 format (`YYYY-MM-DD`).
+### 3. Consistency
+* **Issue Found:** We found inconsistent categorical coding in the `applicant_info.gender` field (mixing 'M'/'F' with 'Male'/'Female') and inconsistent data types across the collection (8 records stored `financials.annual_income` as strings instead of numbers). 
+* **Remediation:** Standardized 111 records by mapping 'M'/'F' to 'Male'/'Female'. Dynamically cast the 8 string-based income values to integers. 
 
-#### 3. Schema Validation
-* Locked the collection against future bad inserts by enforcing a strict MongoDB `$jsonSchema` based on the official project Data Dictionary.
-* Guarantees all required nested objects (`applicant_info`, `financials`), critical identifiers, BSON data types, and ISO 8601 regex patterns are perfectly compliant. 
-* **Final Audit Result:** 0 invalid documents found.
+### 4. Validity
+* **Issue Found:** 157 records contained invalid date formats in `applicant_info.date_of_birth` (e.g., DD/MM/YYYY or YYYY/MM/DD instead of the ISO 8601 standard).
+* **Remediation:** Utilized Pandas datetime parsing to intelligently convert all 157 non-standard strings into the strict `YYYY-MM-DD` format required by our schema.
 
-#### 4. Data Export
-Extracts the validated database into two distinct formats for cross-functional teams:
-* **JSON:** A nested `clean_credit_applications.json` file for system backups and software engineering consumption.
-* **CSV:** A flattened, tabular `clean_credit_applications.csv` file (using `pandas.json_normalize`) designed specifically for the Data Science team's models.
+### 5. Accuracy
+* **Issue Found:** We detected impossible, negative values in numeric fields: 2 records had negative `credit_history_months` and 1 record had a negative `savings_balance`.
+* **Remediation:** Converted the time metrics to absolute (positive) values, assuming typographical errors. Capped the negative savings balance at $0 to conservatively reflect reality without artificially inflating the applicant's wealth profile.
 
-### Key Results
-* **Raw Records Evaluated:** 502
-* **Final Clean Records:** 494 perfectly validated, structurally sound records ready for analysis.
+### 6. Timeliness
+* **Issue Found:** While static datasets limit real-time timeliness checks, our audit uncovered a strong indicator of stale data. We found 5 records where income was stored under the obsolete key `annual_salary` rather than the current `annual_income`. 
+* **Remediation & Governance Impact:** This schema drift strongly suggests these 5 applications originated from a legacy system or an outdated version of the application form. Consequently, the financial figures in these specific records may no longer be up-to-date, potentially violating the Timeliness dimension. We mapped the keys to salvage the records for structural completeness, but our governance policy recommendation is to flag these older records and mandate a "data refresh" to ensure NovaCred's algorithms are scoring applicants based on their current financial reality.
 
 
 ## Data Scientist Pipeline: Bias Detection & Proxy Discrimination Analysis
