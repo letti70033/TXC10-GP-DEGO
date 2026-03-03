@@ -87,15 +87,8 @@ This notebook applies a structured bias analysis to the cleaned dataset (`clean_
 * All 8 tests — chi-squared, t-tests, Pearson correlation, Kruskal-Wallis, and Fairlearn DPD — consolidated into a single reference table covering every hypothesis tested.
 
 ### Key Results
-* **Disparate Impact Ratio (gender):** 0.772 — four-fifths rule **FAIL**
-* **Demographic Parity Difference (fairlearn):** −0.151 — 15.1 pp absolute gap in favour of male applicants
+* **Disparate Impact Ratio (gender):** as 0.772 < 0.8 —> four-fifths rule **FAILS**
+* **Demographic Parity Difference (fairlearn):** 15.1 % absolute gap in favour of male applicants
 * **Most affected group:** Women under 30 (DI = 0.682, approval rate 34.1%)
 * **Confirmed proxies:** `credit_history_months` (age), `zip_code` (geography)
 * **Rejected proxy hypotheses:** `annual_income` and `savings_balance` — no significant gender gap detected in either financial attribute
-* **Governance flag:** Dominant rejection label `algorithm_risk_score` provides no explanation of decision drivers, conflicting with GDPR right to explanation and EU AI Act transparency requirements.
-
-#### Methodological Limitations
-* **Sample size:** The 60+ group (n = 43) has limited statistical power; findings should be validated on a larger cohort.
-* **Synthetic dataset:** Results reflect intentionally injected patterns; effect sizes may be inflated relative to a production system.
-* **No ground truth:** Without an independent creditworthiness label, error-rate-based metrics (equalized odds, equal opportunity) cannot be computed — analysis is limited to outcome-based metrics.
-* **Single time period:** Longitudinal analysis would be required to confirm persistence of bias over time.
