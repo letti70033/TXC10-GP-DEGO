@@ -1,6 +1,11 @@
 # TXC10-GP-DEGO
 TXC10 - DEGO 2606 Group Project – Credit Application Governance Analysis
 
+1. Data Engineer: 
+2. Data Scientist: 70033 Leticia Brendle 
+3. Governance Officer: 
+
+This workbook contains 3 notebooks, each corresponding to one Role:
 
 ## Data Engineering Pipeline: Credit Applications
 
