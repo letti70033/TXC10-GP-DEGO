@@ -38,7 +38,7 @@ Out of the initial 500+ records, our automated Data Engineering pipeline success
 * **Remediation & Governance Impact:** This schema drift strongly suggests these 5 applications originated from a legacy system or an outdated version of the application form. Consequently, the financial figures in these specific records may no longer be up-to-date, potentially violating the Timeliness dimension. We mapped the keys to salvage the records for structural completeness, but our governance policy recommendation is to flag these older records and mandate a "data refresh" to ensure NovaCred's algorithms are scoring applicants based on their current financial reality.
 
 
-## Data Scientist Pipeline: Bias Detection & Proxy Discrimination Analysis
+## Bias Detection & Proxy Discrimination Analysis
 
 This notebook applies a structured bias analysis to the cleaned dataset (`clean_credit_applications.csv`), using **Python**, **pandas**, **scipy**, and **fairlearn** to detect fairness violations, identify proxy discrimination, and quantify interaction effects across protected attributes.
 
