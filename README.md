@@ -14,27 +14,27 @@ As part of the NovaCred Data Governance Task Force, we conducted a comprehensive
 Out of the initial 502 raw records, our automated Data Engineering pipeline cleaned and retained **490 valid records**. All removed records were preserved in `data/quarantined_records.json` with machine-readable drop reason tags, ensuring nothing is permanently lost. The clean dataset was then locked under strict MongoDB schema validation to prevent future degradation.
 
 ### 1. Uniqueness
-* **Issue Found:** Two records (`app_042`, `app_001`) shared identical `_id` fields, indicating resubmissions. A secondary SSN audit revealed two additional conflicts: `937-72-8731` (Sandra Smith vs Samuel Hill) and `780-24-9300` (Susan Martinez vs Gary Wilson), where different individuals shared the same national identifier.
-* **Remediation:** Deduplicated `_id` conflicts during initial loading, keeping the most recent submission. For SSN conflicts with different names, both records in each pair were removed as neither could be verified without external evidence. In total, 6 records were quarantined under the uniqueness stage (2 duplicate IDs, 4 SSN conflicts).
+* **Issue Found:** Two records (`app_042`, `app_001`) shared identical `_id` fields, indicating resubmissions (0.4% of 502). A secondary SSN audit revealed two additional conflicts: `937-72-8731` and `780-24-9300`, where different individuals shared the same national identifier (4 records, 0.8%).
+* **Remediation:** Deduplicated `_id` conflicts during initial loading, keeping the most recent submission. For SSN conflicts with different names, both records in each pair were removed as neither could be verified without external evidence. In total, 6 records (1.2%) were quarantined under the uniqueness stage (2 duplicate IDs, 4 SSN conflicts).
 
 ### 2. Completeness
-* **Issue Found:** A database-wide audit revealed 5 missing SSNs, 1 missing date of birth, and 2 missing emails. An additional 4 emails were present but structurally invalid (e.g. `mike johnson@gmail.com`, `sarah.smith@`). We also found 5 records where `annual_income` was stored under the legacy key `annual_salary` (schema drift).
-* **Remediation:** Dropped 6 structurally invalid records lacking KYC-required fields (SSN, DOB) that are also essential for bias testing. For emails, both missing and malformed values were set to `null` rather than a placeholder string. This is more honest: `null` means no valid address is known, and the schema explicitly allows it. The 5 drifted `annual_salary` keys were renamed to `annual_income`.
+* **Issue Found:** A database-wide audit revealed 5 missing SSNs (1.0%), 1 missing date of birth (0.2%), and 2 missing emails (0.4%). An additional 4 emails were present but structurally invalid (0.8%, e.g. `mike johnson@gmail.com`, `sarah.smith@`). We also found 5 records where `annual_income` was stored under the legacy key `annual_salary` (1.0%, schema drift).
+* **Remediation:** Dropped 6 structurally invalid records (1.2%) lacking KYC-required fields (SSN, DOB) that are also essential for bias testing. For emails, both missing and malformed values were set to `null` rather than a placeholder string. This is more honest: `null` means no valid address is known, and the schema explicitly allows it. The 5 drifted `annual_salary` keys were renamed to `annual_income`.
 
 ### 3. Consistency
-* **Issue Found:** The `applicant_info.gender` field mixed abbreviations and full words ('M'/'F' alongside 'Male'/'Female'). Additionally, 7 records stored `financials.annual_income` as strings instead of numbers.
+* **Issue Found:** The `applicant_info.gender` field mixed abbreviations and full words ('M'/'F' alongside 'Male'/'Female'), affecting 109 records (21.7%). Additionally, 7 records (1.4%) stored `financials.annual_income` as strings instead of numbers.
 * **Remediation:** Standardized 109 gender records by mapping abbreviations to their full-word equivalents. Cast the 7 string-typed income values to integers using a MongoDB aggregation pipeline update.
 
 ### 4. Validity
-* **Issue Found:** 156 records contained non-standard date formats in `applicant_info.date_of_birth` (slash-delimited variants such as DD/MM/YYYY, MM/DD/YYYY, and YYYY/MM/DD). Four emails were present but failed a standard RFC 5321 structural check.
+* **Issue Found:** 156 records (31.1%) contained non-standard date formats in `applicant_info.date_of_birth` (slash-delimited variants such as DD/MM/YYYY, MM/DD/YYYY, and YYYY/MM/DD). Four emails (0.8%) were present but failed a standard RFC 5321 structural check.
 * **Remediation:** Replaced Pandas date inference (which emits silent warnings on ambiguous input) with a deterministic, rule-based parser. The parser resolves format by inspecting segment magnitude: a first segment above 31 is a year, above 12 is a day, and so on. Truly ambiguous cases (39 records where both day and month are 12 or below) were defaulted to European DD/MM/YYYY, which is the dominant format in the dataset. Invalid emails were nulled via regex audit.
 
 ### 5. Accuracy
-* **Issue Found:** Two records had negative `credit_history_months` and one had a negative `savings_balance`, both of which are impossible in practice.
+* **Issue Found:** Two records (0.4%) had negative `credit_history_months` and one record (0.2%) had a negative `savings_balance`, both of which are impossible in practice. Combined, 3 records (0.6%) contained impossible numeric values.
 * **Remediation:** Converted negative credit history values to their absolute equivalents (assumed typographical errors). Capped the negative savings balance at $0 to conservatively reflect reality without inflating the applicant's financial profile.
 
 ### 6. Timeliness
-* **Issue Found:** Five records stored income under the obsolete key `annual_salary` rather than the current `annual_income`, a strong indicator of schema drift from a legacy intake form.
+* **Issue Found:** Five records (1.0%) stored income under the obsolete key `annual_salary` rather than the current `annual_income`, a strong indicator of schema drift from a legacy intake form.
 * **Remediation:** The keys were renamed to restore structural completeness. From a governance perspective, these records should be flagged for a data refresh, as the income figures may reflect an outdated financial snapshot and could skew the credit scoring algorithm.
 
 
