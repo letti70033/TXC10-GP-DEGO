@@ -64,66 +64,6 @@
         "_drop_stage": "uniqueness"
     },
     {
-        "_id": "app_016",
-        "applicant_info": {
-            "full_name": "Gary Wilson",
-            "email": "gary.wilson85@yahoo.com",
-            "ssn": "780-24-9300",
-            "ip_address": "192.168.20.42",
-            "gender": "M",
-            "date_of_birth": "1959-12-11",
-            "zip_code": "10091"
-        },
-        "financials": {
-            "annual_income": 123000,
-            "credit_history_months": 71,
-            "debt_to_income": 0.37,
-            "savings_balance": 86599
-        },
-        "spending_behavior": [
-            {
-                "category": "Groceries",
-                "amount": 485
-            }
-        ],
-        "decision": {
-            "loan_approved": false,
-            "rejection_reason": "algorithm_risk_score"
-        },
-        "_drop_reason": "ssn_conflict",
-        "_drop_stage": "uniqueness"
-    },
-    {
-        "_id": "app_088",
-        "applicant_info": {
-            "full_name": "Susan Martinez",
-            "email": "susan.martinez83@protonmail.com",
-            "ssn": "780-24-9300",
-            "ip_address": "172.23.224.13",
-            "gender": "F",
-            "date_of_birth": "1986-10-15",
-            "zip_code": "90229"
-        },
-        "financials": {
-            "annual_income": "55000",
-            "credit_history_months": 55,
-            "debt_to_income": 0.43,
-            "savings_balance": 29118
-        },
-        "spending_behavior": [
-            {
-                "category": "Transportation",
-                "amount": 339
-            }
-        ],
-        "decision": {
-            "loan_approved": false,
-            "rejection_reason": "algorithm_risk_score"
-        },
-        "_drop_reason": "ssn_conflict",
-        "_drop_stage": "uniqueness"
-    },
-    {
         "_id": "app_101",
         "applicant_info": {
             "full_name": "Sandra Smith",
@@ -185,6 +125,66 @@
             "rejection_reason": "algorithm_risk_score"
         },
         "loan_purpose": "education",
+        "_drop_reason": "ssn_conflict",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_088",
+        "applicant_info": {
+            "full_name": "Susan Martinez",
+            "email": "susan.martinez83@protonmail.com",
+            "ssn": "780-24-9300",
+            "ip_address": "172.23.224.13",
+            "gender": "F",
+            "date_of_birth": "1986-10-15",
+            "zip_code": "90229"
+        },
+        "financials": {
+            "annual_income": "55000",
+            "credit_history_months": 55,
+            "debt_to_income": 0.43,
+            "savings_balance": 29118
+        },
+        "spending_behavior": [
+            {
+                "category": "Transportation",
+                "amount": 339
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "_drop_reason": "ssn_conflict",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_016",
+        "applicant_info": {
+            "full_name": "Gary Wilson",
+            "email": "gary.wilson85@yahoo.com",
+            "ssn": "780-24-9300",
+            "ip_address": "192.168.20.42",
+            "gender": "M",
+            "date_of_birth": "1959-12-11",
+            "zip_code": "10091"
+        },
+        "financials": {
+            "annual_income": 123000,
+            "credit_history_months": 71,
+            "debt_to_income": 0.37,
+            "savings_balance": 86599
+        },
+        "spending_behavior": [
+            {
+                "category": "Groceries",
+                "amount": 485
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
         "_drop_reason": "ssn_conflict",
         "_drop_stage": "uniqueness"
     },
