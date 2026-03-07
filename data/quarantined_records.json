@@ -1,0 +1,388 @@
+[
+    {
+        "_id": "app_042",
+        "applicant_info": {
+            "full_name": "Joseph Lopez",
+            "email": "joseph.lopez1@gmail.com",
+            "ssn": "652-70-5530",
+            "ip_address": "192.168.91.142",
+            "gender": "Male",
+            "date_of_birth": "1990-05-04",
+            "zip_code": "10044"
+        },
+        "financials": {
+            "annual_income": 69000,
+            "credit_history_months": 43,
+            "debt_to_income": 0.41,
+            "savings_balance": 15974
+        },
+        "spending_behavior": [
+            {
+                "category": "Insurance",
+                "amount": 153
+            },
+            {
+                "category": "Dining",
+                "amount": 468
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "_drop_reason": "duplicate_app_id",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_001",
+        "applicant_info": {
+            "full_name": "Stephanie Nguyen",
+            "email": "stephanie.nguyen47@mail.com",
+            "ssn": "427-90-1892",
+            "ip_address": "10.121.120.213",
+            "gender": "Female",
+            "date_of_birth": "1986-05-27",
+            "zip_code": "90230"
+        },
+        "financials": {
+            "annual_income": 102000,
+            "credit_history_months": 37,
+            "debt_to_income": 0.42,
+            "savings_balance": 0
+        },
+        "spending_behavior": [
+            {
+                "category": "Fitness",
+                "amount": 576
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "high_dti_ratio"
+        },
+        "_drop_reason": "duplicate_app_id",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_101",
+        "applicant_info": {
+            "full_name": "Sandra Smith",
+            "email": "sandra.smith99@icloud.com",
+            "ssn": "937-72-8731",
+            "ip_address": "172.30.237.98",
+            "gender": "Female",
+            "date_of_birth": "1997-03-23",
+            "zip_code": "90255"
+        },
+        "financials": {
+            "annual_income": 55000,
+            "credit_history_months": 0,
+            "debt_to_income": 0.3,
+            "savings_balance": 15364
+        },
+        "spending_behavior": [
+            {
+                "category": "Groceries",
+                "amount": 527
+            },
+            {
+                "category": "Entertainment",
+                "amount": 464
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "_drop_reason": "ssn_conflict",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_234",
+        "applicant_info": {
+            "full_name": "Samuel Hill",
+            "email": "samuel.hill67@protonmail.com",
+            "ssn": "937-72-8731",
+            "ip_address": "10.143.146.157",
+            "gender": "Male",
+            "date_of_birth": "1976/01/29",
+            "zip_code": "10090"
+        },
+        "financials": {
+            "annual_income": 96000,
+            "credit_history_months": 60,
+            "debt_to_income": 0.3,
+            "savings_balance": 38703
+        },
+        "spending_behavior": [
+            {
+                "category": "Insurance",
+                "amount": 526
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "loan_purpose": "education",
+        "_drop_reason": "ssn_conflict",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_088",
+        "applicant_info": {
+            "full_name": "Susan Martinez",
+            "email": "susan.martinez83@protonmail.com",
+            "ssn": "780-24-9300",
+            "ip_address": "172.23.224.13",
+            "gender": "F",
+            "date_of_birth": "1986-10-15",
+            "zip_code": "90229"
+        },
+        "financials": {
+            "annual_income": "55000",
+            "credit_history_months": 55,
+            "debt_to_income": 0.43,
+            "savings_balance": 29118
+        },
+        "spending_behavior": [
+            {
+                "category": "Transportation",
+                "amount": 339
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "_drop_reason": "ssn_conflict",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_016",
+        "applicant_info": {
+            "full_name": "Gary Wilson",
+            "email": "gary.wilson85@yahoo.com",
+            "ssn": "780-24-9300",
+            "ip_address": "192.168.20.42",
+            "gender": "M",
+            "date_of_birth": "1959-12-11",
+            "zip_code": "10091"
+        },
+        "financials": {
+            "annual_income": 123000,
+            "credit_history_months": 71,
+            "debt_to_income": 0.37,
+            "savings_balance": 86599
+        },
+        "spending_behavior": [
+            {
+                "category": "Groceries",
+                "amount": 485
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "_drop_reason": "ssn_conflict",
+        "_drop_stage": "uniqueness"
+    },
+    {
+        "_id": "app_075",
+        "applicant_info": {
+            "full_name": "Margaret Williams",
+            "email": "",
+            "gender": "",
+            "date_of_birth": "",
+            "zip_code": ""
+        },
+        "financials": {
+            "annual_income": 61000,
+            "credit_history_months": 29,
+            "debt_to_income": 0.15,
+            "savings_balance": 25894
+        },
+        "spending_behavior": [
+            {
+                "category": "Shopping",
+                "amount": 121
+            },
+            {
+                "category": "Transportation",
+                "amount": 59
+            },
+            {
+                "category": "Entertainment",
+                "amount": 882
+            }
+        ],
+        "decision": {
+            "loan_approved": true,
+            "interest_rate": 5.1,
+            "approved_amount": 22000
+        },
+        "_drop_reason": "missing_ssn",
+        "_drop_stage": "completeness"
+    },
+    {
+        "_id": "app_120",
+        "applicant_info": {
+            "full_name": "Carolyn Martin",
+            "email": "",
+            "gender": "Female",
+            "date_of_birth": "",
+            "zip_code": "90240"
+        },
+        "financials": {
+            "annual_income": 103000,
+            "credit_history_months": 96,
+            "debt_to_income": 0.45,
+            "savings_balance": 26517
+        },
+        "spending_behavior": [
+            {
+                "category": "Utilities",
+                "amount": 808
+            },
+            {
+                "category": "Dining",
+                "amount": 590
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "algorithm_risk_score"
+        },
+        "_drop_reason": "missing_ssn",
+        "_drop_stage": "completeness"
+    },
+    {
+        "_id": "app_268",
+        "applicant_info": {
+            "full_name": "Larry Williams",
+            "email": "",
+            "gender": "",
+            "date_of_birth": "1971-05-14",
+            "zip_code": "10005"
+        },
+        "financials": {
+            "annual_income": 112000,
+            "credit_history_months": 102,
+            "debt_to_income": 0.07,
+            "savings_balance": 54823
+        },
+        "spending_behavior": [
+            {
+                "category": "Utilities",
+                "amount": 267
+            },
+            {
+                "category": "Gambling",
+                "amount": 751
+            }
+        ],
+        "decision": {
+            "loan_approved": true,
+            "interest_rate": 3.4,
+            "approved_amount": 41000
+        },
+        "_drop_reason": "missing_ssn",
+        "_drop_stage": "completeness"
+    },
+    {
+        "_id": "app_001",
+        "applicant_info": {
+            "full_name": "Stephanie Nguyen",
+            "email": "stephanie.nguyen47@mail.com"
+        },
+        "financials": {
+            "annual_income": 102000,
+            "credit_history_months": 37,
+            "debt_to_income": 0.42,
+            "savings_balance": 0
+        },
+        "spending_behavior": [
+            {
+                "category": "Fitness",
+                "amount": 576
+            }
+        ],
+        "decision": {
+            "loan_approved": false,
+            "rejection_reason": "high_dti_ratio"
+        },
+        "notes": "DUPLICATE_ENTRY_ERROR",
+        "_drop_reason": "missing_ssn",
+        "_drop_stage": "completeness"
+    },
+    {
+        "_id": "app_165",
+        "applicant_info": {
+            "full_name": "Brandon Moore",
+            "email": "",
+            "gender": "Male",
+            "date_of_birth": "",
+            "zip_code": "10077"
+        },
+        "financials": {
+            "annual_income": 66000,
+            "credit_history_months": 6,
+            "debt_to_income": 0.16,
+            "savings_balance": 36936
+        },
+        "spending_behavior": [
+            {
+                "category": "Dining",
+                "amount": 435
+            },
+            {
+                "category": "Insurance",
+                "amount": 508
+            }
+        ],
+        "decision": {
+            "loan_approved": true,
+            "interest_rate": 5.6,
+            "approved_amount": 53000
+        },
+        "processing_timestamp": "2024-01-15T00:00:00Z",
+        "_drop_reason": "missing_ssn",
+        "_drop_stage": "completeness"
+    },
+    {
+        "_id": "app_350",
+        "applicant_info": {
+            "full_name": "Linda Adams",
+            "email": "",
+            "ssn": "356-98-8263",
+            "ip_address": "10.207.183.196",
+            "gender": "Female",
+            "date_of_birth": "",
+            "zip_code": "90291"
+        },
+        "financials": {
+            "annual_income": 89000,
+            "credit_history_months": 52,
+            "debt_to_income": 0.2,
+            "savings_balance": 14377
+        },
+        "spending_behavior": [
+            {
+                "category": "Utilities",
+                "amount": 876
+            },
+            {
+                "category": "Entertainment",
+                "amount": 670
+            }
+        ],
+        "decision": {
+            "loan_approved": true,
+            "interest_rate": 4.1,
+            "approved_amount": 67000
+        },
+        "_drop_reason": "missing_date_of_birth",
+        "_drop_stage": "completeness"
+    }
+]

@@ -9,33 +9,33 @@ This workbook contains 3 notebooks, each corresponding to one Role:
 
 ## Data Quality Findings
 
-As part of the NovaCred Data Governance Task Force, we conducted a comprehensive data quality audit on the `raw_credit_applications.json` dataset. To ensure our algorithmic bias testing is built on a reliable foundation, we evaluated the dataset across the six core dimensions of data quality. 
+As part of the NovaCred Data Governance Task Force, we conducted a comprehensive data quality audit on the `raw_credit_applications.json` dataset. To ensure our algorithmic bias testing is built on a reliable foundation, we evaluated the dataset across the six core dimensions of data quality.
 
-Out of the initial 500+ records, our automated Data Engineering pipeline successfully cleaned and retained 494 valid records. These were subsequently locked under strict MongoDB schema validation to prevent future degradation into a "data swamp".
+Out of the initial 502 raw records, our automated Data Engineering pipeline cleaned and retained **490 valid records**. All removed records were preserved in `data/quarantined_records.json` with machine-readable drop reason tags, ensuring nothing is permanently lost. The clean dataset was then locked under strict MongoDB schema validation to prevent future degradation.
 
 ### 1. Uniqueness
-* **Issue Found:** We identified 2 duplicate records (`app_042`, `app_001`) sharing identical `_id` fields. 
-* **Remediation:** Overwrote the duplicates during database insertion to ensure every application represents a unique individual, preventing skewed analytics.
+* **Issue Found:** Two records (`app_042`, `app_001`) shared identical `_id` fields, indicating resubmissions (0.4% of 502). A secondary SSN audit revealed two additional conflicts: `937-72-8731` and `780-24-9300`, where different individuals shared the same national identifier (4 records, 0.8%).
+* **Remediation:** Deduplicated `_id` conflicts during initial loading, keeping the most recent submission. For SSN conflicts with different names, both records in each pair were removed as neither could be verified without external evidence. In total, 6 records (1.2%) were quarantined under the uniqueness stage (2 duplicate IDs, 4 SSN conflicts).
 
 ### 2. Completeness
-* **Issue Found:** A database-wide audit revealed missing critical identifiers (5 missing SSNs, 1 missing DOB), missing demographic data (gender), and missing contact information (2 missing emails). We also found 5 records where `annual_income` was seemingly missing, but was actually stored under the key `annual_salary` (schema drift).
-* **Remediation:** Dropped 6 structurally invalid "ghost" records that lacked legally required KYC fields (SSN/DOB) or essential demographic data (gender) needed for bias testing. However, for the 2 missing emails, we imputed them with a placeholder ("UNKNOWN_EMAIL") instead of dropping the rows. We did this because email is non-critical for the credit risk algorithm; dropping those rows would mean throwing away perfectly valid financial data. Finally, we renamed the 5 drifted `annual_salary` keys to `annual_income`.
+* **Issue Found:** A database-wide audit revealed 5 missing SSNs (1.0%), 1 missing date of birth (0.2%), and 2 missing emails (0.4%). An additional 4 emails were present but structurally invalid (0.8%, e.g. `mike johnson@gmail.com`, `sarah.smith@`). We also found 5 records where `annual_income` was stored under the legacy key `annual_salary` (1.0%, schema drift).
+* **Remediation:** Dropped 6 structurally invalid records (1.2%) lacking KYC-required fields (SSN, DOB) that are also essential for bias testing. For emails, both missing and malformed values were set to `null` rather than a placeholder string. This is more honest: `null` means no valid address is known, and the schema explicitly allows it. The 5 drifted `annual_salary` keys were renamed to `annual_income`.
 
 ### 3. Consistency
-* **Issue Found:** We found inconsistent categorical coding in the `applicant_info.gender` field (mixing 'M'/'F' with 'Male'/'Female') and inconsistent data types across the collection (8 records stored `financials.annual_income` as strings instead of numbers). 
-* **Remediation:** Standardized 111 records by mapping 'M'/'F' to 'Male'/'Female'. Dynamically cast the 8 string-based income values to integers. 
+* **Issue Found:** The `applicant_info.gender` field mixed abbreviations and full words ('M'/'F' alongside 'Male'/'Female'), affecting 109 records (21.7%). Additionally, 7 records (1.4%) stored `financials.annual_income` as strings instead of numbers.
+* **Remediation:** Standardized 109 gender records by mapping abbreviations to their full-word equivalents. Cast the 7 string-typed income values to integers using a MongoDB aggregation pipeline update.
 
 ### 4. Validity
-* **Issue Found:** 157 records contained invalid date formats in `applicant_info.date_of_birth` (e.g., DD/MM/YYYY or YYYY/MM/DD instead of the ISO 8601 standard).
-* **Remediation:** Utilized Pandas datetime parsing to intelligently convert all 157 non-standard strings into the strict `YYYY-MM-DD` format required by our schema.
+* **Issue Found:** 156 records (31.1%) contained non-standard date formats in `applicant_info.date_of_birth` (slash-delimited variants such as DD/MM/YYYY, MM/DD/YYYY, and YYYY/MM/DD). Four emails (0.8%) were present but failed a standard RFC 5321 structural check.
+* **Remediation:** Replaced Pandas date inference (which emits silent warnings on ambiguous input) with a deterministic, rule-based parser. The parser resolves format by inspecting segment magnitude: a first segment above 31 is a year, above 12 is a day, and so on. Truly ambiguous cases (39 records where both day and month are 12 or below) were defaulted to European DD/MM/YYYY, which is the dominant format in the dataset. Invalid emails were nulled via regex audit.
 
 ### 5. Accuracy
-* **Issue Found:** We detected impossible, negative values in numeric fields: 2 records had negative `credit_history_months` and 1 record had a negative `savings_balance`.
-* **Remediation:** Converted the time metrics to absolute (positive) values, assuming typographical errors. Capped the negative savings balance at $0 to conservatively reflect reality without artificially inflating the applicant's wealth profile.
+* **Issue Found:** Two records (0.4%) had negative `credit_history_months` and one record (0.2%) had a negative `savings_balance`, both of which are impossible in practice. Combined, 3 records (0.6%) contained impossible numeric values.
+* **Remediation:** Converted negative credit history values to their absolute equivalents (assumed typographical errors). Capped the negative savings balance at $0 to conservatively reflect reality without inflating the applicant's financial profile.
 
 ### 6. Timeliness
-* **Issue Found:** While static datasets limit real-time timeliness checks, our audit uncovered a strong indicator of stale data. We found 5 records where income was stored under the obsolete key `annual_salary` rather than the current `annual_income`. 
-* **Remediation & Governance Impact:** This schema drift strongly suggests these 5 applications originated from a legacy system or an outdated version of the application form. Consequently, the financial figures in these specific records may no longer be up-to-date, potentially violating the Timeliness dimension. We mapped the keys to salvage the records for structural completeness, but our governance policy recommendation is to flag these older records and mandate a "data refresh" to ensure NovaCred's algorithms are scoring applicants based on their current financial reality.
+* **Issue Found:** Five records (1.0%) stored income under the obsolete key `annual_salary` rather than the current `annual_income`, a strong indicator of schema drift from a legacy intake form.
+* **Remediation:** The keys were renamed to restore structural completeness. From a governance perspective, these records should be flagged for a data refresh, as the income figures may reflect an outdated financial snapshot and could skew the credit scoring algorithm.
 
 
 ## Bias Detection & Proxy Discrimination Analysis
