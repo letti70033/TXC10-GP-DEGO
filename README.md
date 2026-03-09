@@ -14,7 +14,7 @@ As part of the NovaCred Data Governance Task Force, we conducted a comprehensive
 Out of the initial 502 raw records, our automated Data Engineering pipeline cleaned and retained **487 valid records**. All removed records were preserved in `data/quarantined_records.json` with machine-readable drop reason tags, ensuring nothing is permanently lost. The clean dataset was then locked under strict MongoDB schema validation to prevent future degradation.
 
 ### 1. Uniqueness
-* **Issue Found:** Two records (`app_042`, `app_001`) shared identical `_id` fields, indicating resubmissions (0.4% of 502). A secondary SSN audit revealed two additional conflicts: `937-72-8731` and `780-24-9300`, where different individuals shared the same national identifier (4 records, 0.8%).
+* **Issue Found:** Two records shared identical `_id` fields, indicating resubmissions (0.4% of 502). A secondary SSN audit revealed two additional conflicts where different individuals shared the same national identifier (4 records, 0.8%).
 * **Remediation:** Deduplicated `_id` conflicts during initial loading, keeping the most recent submission. For SSN conflicts with different names, both records in each pair were removed as neither could be verified without external evidence. In total, 6 records (1.2%) were quarantined under the uniqueness stage (2 duplicate IDs, 4 SSN conflicts).
 
 ### 2. Completeness
