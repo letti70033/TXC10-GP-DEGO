@@ -4206,39 +4206,6 @@
         }
     },
     {
-        "_id": "app_043",
-        "applicant_info": {
-            "full_name": "Daniel King",
-            "email": "daniel.king27@mail.com",
-            "ssn": "166-23-2000",
-            "ip_address": "10.204.248.60",
-            "gender": "Male",
-            "date_of_birth": "1985-08-17",
-            "zip_code": "10038"
-        },
-        "financials": {
-            "annual_income": 131000,
-            "credit_history_months": 10,
-            "debt_to_income": 0.06,
-            "savings_balance": 53098
-        },
-        "spending_behavior": [
-            {
-                "category": "Groceries",
-                "amount": 398
-            },
-            {
-                "category": "Entertainment",
-                "amount": 464
-            }
-        ],
-        "decision": {
-            "loan_approved": true,
-            "interest_rate": 3.9,
-            "approved_amount": 68000
-        }
-    },
-    {
         "_id": "app_204",
         "applicant_info": {
             "full_name": "Jonathan Carter",
@@ -4897,35 +4864,6 @@
         }
     },
     {
-        "_id": "app_290",
-        "applicant_info": {
-            "full_name": "Stephanie Perez",
-            "email": "stephanie.perez69@gmail.com",
-            "ssn": "866-48-3726",
-            "ip_address": "172.25.130.219",
-            "gender": "Female",
-            "date_of_birth": "1990-01-06",
-            "zip_code": "90221"
-        },
-        "financials": {
-            "annual_income": 104000,
-            "credit_history_months": 39,
-            "debt_to_income": 0.27,
-            "savings_balance": 0
-        },
-        "spending_behavior": [
-            {
-                "category": "Fitness",
-                "amount": 599
-            }
-        ],
-        "decision": {
-            "loan_approved": true,
-            "interest_rate": 4.3,
-            "approved_amount": 49000
-        }
-    },
-    {
         "_id": "app_073",
         "applicant_info": {
             "full_name": "Susan Flores",
@@ -4986,35 +4924,6 @@
             "rejection_reason": "algorithm_risk_score"
         },
         "loan_purpose": "home_improvement"
-    },
-    {
-        "_id": "app_156",
-        "applicant_info": {
-            "full_name": "Jessica Green",
-            "email": "jessica.green86@gmail.com",
-            "ssn": "801-19-4595",
-            "ip_address": "192.168.59.201",
-            "gender": "Female",
-            "date_of_birth": "1999-11-28",
-            "zip_code": "90239"
-        },
-        "financials": {
-            "annual_income": 25000,
-            "credit_history_months": 3,
-            "debt_to_income": 0.21,
-            "savings_balance": 13641
-        },
-        "spending_behavior": [
-            {
-                "category": "Rent",
-                "amount": 218
-            }
-        ],
-        "decision": {
-            "loan_approved": false,
-            "rejection_reason": "algorithm_risk_score"
-        },
-        "processing_timestamp": "2024-01-15T00:00:00Z"
     },
     {
         "_id": "app_193",
