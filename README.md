@@ -44,9 +44,9 @@ TXC10-GP-DEGO/
 | Area | Key Finding |
 |---|---|
 | Data Quality | 15 records quarantined; 6 issue categories identified across 502 records |
-| Bias — Gender | DI = **0.772** (fails the four-fifths rule); 15.1 pp gap favouring men |
-| Bias — Age | Applicants under 30 approved at only **41.5%** vs 60–65% for older groups | 
-| Bias — Geography | NYC-area (100xx) approved at **64.3%** vs LA-area (902xx) at **52.0%** | 
+| Bias — Gender | DI = **0.773** (fails the four-fifths rule); 15.0 pp gap favouring men |
+| Bias — Age | Applicants under 30 approved at only **41.8%** vs 60–65% for older groups | 
+| Bias — Geography | NYC-area (100xx) approved at **64.6%** vs LA-area (902xx) at **52.5%** | 
 | Privacy | 4 PII fields stored in plain text; no consent tracking; no retention policy |
 | Governance | No audit trail for decisions; no human oversight documentation |
 
