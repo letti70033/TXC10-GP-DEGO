@@ -17,29 +17,29 @@ This notebook applies a structured bias analysis to the cleaned dataset (`clean_
 #### 3. Bias Detection
 
 ##### 3.1 Gender Disparate Impact
-* Applied the four-fifths rule (DI = approval rate female / approval rate male). Female approval (50.8%) versus male approval (65.9%) produces a **DI of 0.772**, below the 0.8 legal threshold, confirmed statistically significant (χ², p = 0.001).
-* **Fairlearn validation:** `demographic_parity_difference` (DPD) computed via `fairlearn.metrics` confirms a **−0.151 absolute gap** (15.1 percentage points) in favour of male applicants. A `MetricFrame` breakdown provides audit-ready per-group rates for regulatory reporting under the EU AI Act.
+* Applied the four-fifths rule (DI = approval rate female / approval rate male). Female approval (51.2%) versus male approval (66.3%) produces a **DI of 0.773**, below the 0.8 legal threshold, confirmed statistically significant (χ², p = 0.001).
+* **Fairlearn validation:** `demographic_parity_difference` (DPD) computed via `fairlearn.metrics` confirms a **−0.150 absolute gap** (15.0 percentage points) in favour of male applicants. A `MetricFrame` breakdown provides audit-ready per-group rates for regulatory reporting under the EU AI Act.
 
 ##### 3.2 Age-Based Discrimination Patterns
-* Applicants under 30 are approved at only 41.5%, compared to 60–65% for all older groups, a statistically significant gap (χ², p = 0.008).
+* Applicants under 30 are approved at only 41.8%, compared to 60–65% for all older groups, a statistically significant gap (χ², p = 0.008).
 
 #### 4. Proxy Discrimination
 * **Correlation Heatmap:** Mapped the relationship between all financial features and the approval outcome to identify proxy candidates.
-* **`annual_income` → gender proxy:** Tested but not confirmed — male ($81,358) and female ($83,599) incomes are virtually identical (t-test, p = 0.38).
+* **`annual_income` → gender proxy:** Tested but not confirmed — male ($80,922) and female ($83,989) incomes are virtually identical (t-test, p = 0.23).
 * **`savings_balance` → gender proxy:** Also tested via independent t-test to check for a gender wealth gap that could serve as a second indirect discrimination channel.
 * **`credit_history_months` → age proxy:** Strong positive correlation with applicant age (r = 0.65, p < 0.001), meaning young applicants are structurally penalised for a variable they cannot meaningfully improve.
-* **`zip_code` → geographic proxy:** NYC-area applicants (100xx) approved at 64.3% versus 52.0% for LA-area (902xx), a significant difference (χ², p = 0.025) not explained by financial profiles alone.
+* **`zip_code` → geographic proxy:** NYC-area applicants (100xx) approved at 64.6% versus 52.5% for LA-area (902xx), a significant difference (χ², p = 0.027) not explained by financial profiles alone.
 * **Spending behavior → age proxy:** Spending categories analysed by age group via correlation heatmap and **Kruskal-Wallis tests** (non-parametric, appropriate for right-skewed amounts). Formal statistical tests determine which categories differ significantly across age groups; spending is a weaker proxy than credit history overall.
 
 ##### 5. Interaction Effects
-* Disparate impact ratios computed within each age subgroup. Women under 30 face a DI of **0.682** (34.1% vs 50.0%), significantly worse than either group in isolation, consistent with intersectional discrimination.
+* Disparate impact ratios computed within each age subgroup. Women under 30 face a DI of **0.683** (34.1% vs 50.0%), significantly worse than either group in isolation, consistent with intersectional discrimination.
 
 #### 6. Statistical Summary
 * All 8 tests — chi-squared, t-tests, Pearson correlation, Kruskal-Wallis, and Fairlearn DPD — consolidated into a single reference table covering every hypothesis tested.
 
 ### Key Results
-* **Disparate Impact Ratio (gender):** as 0.772 < 0.8 —> four-fifths rule **FAILS**
-* **Demographic Parity Difference (fairlearn):** 15.1 % absolute gap in favour of male applicants
-* **Most affected group:** Women under 30 (DI = 0.682, approval rate 34.1%)
+* **Disparate Impact Ratio (gender):** as 0.773 < 0.8 —> four-fifths rule **FAILS**
+* **Demographic Parity Difference (fairlearn):** 15.0 % absolute gap in favour of male applicants
+* **Most affected group:** Women under 30 (DI = 0.683, approval rate 34.1%)
 * **Confirmed proxies:** `credit_history_months` (age), `zip_code` (geography)
 * **Rejected proxy hypotheses:** `annual_income` and `savings_balance` — no significant gender gap detected in either financial attribute
