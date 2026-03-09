@@ -3,6 +3,8 @@
 
 > **Scenario:** NovaCred, a fintech startup using ML for credit decisions, received a regulatory inquiry about potential discrimination in its lending practices. Our team acted as a **Data Governance Task Force**, auditing 502 raw credit applications for data quality issues, algorithmic bias, and GDPR/AI Act compliance gaps.
 
+**Video Presentation:** [watch here](https://www.youtube.com/watch?v=Tiepuh7psn0)
+
 ---
 
 ## Repository Structure
@@ -22,7 +24,8 @@ TXC10-GP-DEGO/
 └── reports/
     ├── 01 - data - quality - findings.md  # Detailed data quality methodology & findings
     ├── 02 - bias - analysis - findings.md # Detailed bias analysis methodology & findings
-    └── 03 - privacy - demo - findings.md  # Detailed privacy & governance findings
+    ├── 03 - privacy - demo - findings.md  # Detailed privacy & governance findings
+    └── TXC10-DEGO_presentation.pdf        # Slide deck presentation
 ```
 
 ---
