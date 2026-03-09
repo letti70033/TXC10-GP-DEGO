@@ -47,9 +47,9 @@ TXC10-GP-DEGO/
 | Area | Key Finding |
 |---|---|
 | Data Quality | 15 records quarantined; 6 issue categories identified across 502 records |
-| Bias — Gender | DI = **0.772** (fails the four-fifths rule); 15.1 pp gap favouring men |
-| Bias — Age | Applicants under 30 approved at only **41.5%** vs 60–65% for older groups | 
-| Bias — Geography | NYC-area (100xx) approved at **64.3%** vs LA-area (902xx) at **52.0%** | 
+| Bias — Gender | DI = **0.773** (fails the four-fifths rule); 15.0 pp gap favouring men |
+| Bias — Age | Applicants under 30 approved at only **41.8%** vs 60–65% for older groups | 
+| Bias — Geography | NYC-area (100xx) approved at **64.6%** vs LA-area (902xx) at **52.5%** | 
 | Privacy | 4 PII fields stored in plain text; no consent tracking; no retention policy |
 | Governance | No audit trail for decisions; no human oversight documentation |
 
@@ -101,30 +101,30 @@ Analysis performed on the 487-record clean dataset using `pandas`, `scipy`, and 
 |---|---|---|
 | Male approval rate | 65.9% | Privileged group |
 | Female approval rate | 50.8% | Unprivileged group |
-| **Disparate Impact Ratio** | **0.772** | **Fails four-fifths rule (threshold: 0.8)** |
-| Demographic Parity Difference | −0.151 | 15.1 pp gap in favour of male applicants |
+| **Disparate Impact Ratio** | **0.773** | **Fails four-fifths rule (threshold: 0.8)** |
+| Demographic Parity Difference | −0.150 | 15.0 pp gap in favour of male applicants |
 | Statistical significance | χ², p = 0.001 | Confirmed significant |
 
-The DI ratio of **0.772** falls below the legal four-fifths threshold, constituting evidence of potential disparate impact discrimination. Validated independently with `fairlearn.metrics.demographic_parity_difference`.
+The DI ratio of **0.773** falls below the legal four-fifths threshold, constituting evidence of potential disparate impact discrimination. Validated independently with `fairlearn.metrics.demographic_parity_difference`(+0.15 for male).
 
 ### 2.2 Age-Based Discrimination
 
 | Age Group | Approval Rate | Notes |
 |---|---|---|
-| < 30 | **41.5%** | Significantly lower |
+| < 30 | **41.8%** | Significantly lower |
 | 30–44 | ~62% | Largest group (256 records) |
-| 45–59 | ~65% | |
-| 60+ | ~60% | Small sample (43 records) |
+| 45–59 | ~62% | |
+| 60+ | ~67% | Small sample (43 records) |
 
-Age gap confirmed statistically significant (χ², **p = 0.008**).
+Age gap confirmed statistically significant (χ², **p = 0.009**).
 
 ### 2.3 Proxy Discrimination
 
 | Variable | Proxies For | Finding | Evidence |
 |---|---|---|---|
 | `credit_history_months` | Age | **Confirmed proxy** | r = 0.65 with applicant age, p < 0.001 — young applicants structurally penalised for a variable they cannot improve |
-| `zip_code` | Geography/race | **Confirmed proxy** | NYC (100xx): 64.3% approval vs LA (902xx): 52.0% (χ², p = 0.025), not explained by financial profiles alone |
-| `annual_income` | Gender | Hypothesis rejected | Male ($81,358) vs Female ($83,599), t-test p = 0.38 — no significant gap |
+| `zip_code` | Geography/race | **Confirmed proxy** | NYC (100xx): 64.6% approval vs LA (902xx): 52.5% (χ², p = 0.025), not explained by financial profiles alone |
+| `annual_income` | Gender | Hypothesis rejected | Male ($80,922) vs Female ($83,989), t-test p = 0.23 — no significant gap |
 | `savings_balance` | Gender | Hypothesis rejected | No significant gender wealth gap detected |
 
 ### 2.4 Interaction Effects
@@ -134,9 +134,9 @@ Women under 30 face compounding disadvantage:
 | Group | Approval Rate | DI Ratio |
 |---|---|---|
 | Men under 30 | 50.0% | — |
-| Women under 30 | **34.1%** | **0.682** |
+| Women under 30 | **34.1%** | **0.683** |
 
-A DI of **0.682** — far below the 0.8 threshold — is consistent with **intersectional discrimination** where gender and age effects compound rather than add linearly.
+A DI of **0.683** — far below the 0.8 threshold — is consistent with **intersectional discrimination** where gender and age effects compound rather than add linearly.
 
 ---
 
